@@ -6,7 +6,8 @@ class User(models.Model):
     role = models.CharField(max_length=10, choices=[("admin", "Admin"),
                                                     ("user", "User"),
                                                     ("superadmin", "Superadmin")])
-    token = models.CharField(max_length=50, unique=True)
+    password = models.CharField(max_length=500)
+    token = models.CharField(max_length=500, unique=True)
     
     class Meta:
         db_table = "users"
