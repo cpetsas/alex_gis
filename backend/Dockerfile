@@ -11,5 +11,4 @@ COPY . .
 RUN printenv
 
 WORKDIR /usr/backend/article_api
-
 RUN python3 manage.py migrate
