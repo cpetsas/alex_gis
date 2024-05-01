@@ -15,12 +15,7 @@ services:
   
   postgres_db:
     image: postgres:latest
-    volumes:
-      - postgres_data:/var/lib/postgresql/data/
     environment:
       - POSTGRES_USER=django_dev
       - POSTGRES_PASSWORD=password
       - POSTGRES_DB=articles_dev
-
-volumes:
-  postgres_data:

@@ -16,7 +16,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from .auth_router import AuthRouter
+# from ..controllers.auth_controller import login
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    *AuthRouter.get_endpoints(),
 ]
