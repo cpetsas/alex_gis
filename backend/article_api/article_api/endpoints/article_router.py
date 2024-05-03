@@ -11,6 +11,6 @@ class ArticlesRouter(BaseRouter):
     def get_endpoints(cls):
         return [path('article/create', cls.article_controller.create_article),
                 path('article/', cls.article_controller.get_all_articles),
-                path('article/<str:article_index>', cls.article_controller.get_article),]
-                # path('article/update/<str:article_index>', cls.article_controller.update_article),
-                # path('article/delete/<str:article_index>', cls.article_controller.delete_article)]
+                path('article/<str:article_index>', cls.article_controller.get_article),
+                path('article/update/<str:article_index>', cls.article_controller.update_article),
+                path('article/delete/<str:article_index>', cls.article_controller.delete_article)]
