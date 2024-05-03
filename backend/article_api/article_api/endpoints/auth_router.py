@@ -1,8 +1,9 @@
 from django.urls import path
 from ..controllers.auth_controller import AuthorisationController
+from .base_router import BaseRouter
 
 
-class AuthRouter:
+class AuthRouter(BaseRouter):
 
     auth_controller = AuthorisationController
 
