@@ -8,7 +8,7 @@ class NewsArticle(models.Model):
     content = models.TextField(max_length=3000)
     published = models.BooleanField(default=False)
     published_date = models.DateField(null=True)
-    article_author = models.ForeignKey(author_model.Author, on_delete=models.CASCADE, related_name="autho_id")
+    article_author = models.ForeignKey(author_model.Author, on_delete=models.CASCADE, related_name="author_id")
     article_category = models.ForeignKey(category_model.NewsCategory, on_delete=models.CASCADE, related_name="category_id")
 
     def clean(self):

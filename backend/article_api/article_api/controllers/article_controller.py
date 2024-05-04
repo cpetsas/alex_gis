@@ -21,11 +21,22 @@ class ArticlesController(BaseController):
     @AuthorisationMiddleware.jwt_check_admin_check(user_accessible=True)
     def get_article(_, article_index):
         try:
-            existing_article = NewsArticle.objects.get(id=article_index)
-            serialized_article= BaseController.clean_object(existing_article, "id")
+            try:
+                existing_article = NewsArticle.objects.get(id=article_index)
+            except:
+                return JsonResponse({"message": "Article does not exist."}, status=404)
+            existing_article_author = Author.objects.get(id=existing_article.article_author_id)
+            existing_article_author = BaseController.clean_object(existing_article_author, "id")
+
+            existing_article_category = NewsCategory.objects.get(id=existing_article.article_category_id)
+            existing_article_category = BaseController.clean_object(existing_article_category, "id")
+
+            serialized_article = BaseController.clean_object(existing_article, "id")
+            serialized_article["article_author"] = existing_article_author
+            serialized_article["article_category"] = existing_article_category
             return JsonResponse(serialized_article, status=200)
-        except:
-            return JsonResponse({"message": "author does not exist."}, status=404)
+        except Exception as e:
+            return JsonResponse({"error": str(e).strip()}, status=500)
 
     @staticmethod
     @csrf_exempt
@@ -36,7 +47,16 @@ class ArticlesController(BaseController):
             all_articles = NewsArticle.objects.all()
             serialized_articles = []
             for article in all_articles:
-                serialized_articles.append(BaseController.clean_object(article, "id"))
+                existing_article_author = Author.objects.get(id=article.article_author_id)
+                existing_article_author = BaseController.clean_object(existing_article_author, "id")
+
+                existing_article_category = NewsCategory.objects.get(id=article.article_category_id)
+                existing_article_category = BaseController.clean_object(existing_article_category, "id")
+
+                serialized_article = BaseController.clean_object(article, "id")
+                serialized_article["article_author"] = existing_article_author
+                serialized_article["article_category"] = existing_article_category
+                serialized_articles.append(serialized_article)
             return JsonResponse(serialized_articles, status=200, safe=False)
         except Exception as e:
             return JsonResponse({"error": str(e).strip()}, status=500)

@@ -19,7 +19,7 @@ class AuthorisationController(BaseController):
         payload = {
             "username": username,
             "user_token": user_token,
-            "exp": datetime.datetime.now(datetime.UTC) + datetime.timedelta(minutes=15)
+            "exp": datetime.datetime.now(datetime.UTC) + datetime.timedelta(minutes=150)
         }
 
         encoded_jwt = jwt.encode(payload, os.environ["SECRET_KEY"], algorithm='HS256')
