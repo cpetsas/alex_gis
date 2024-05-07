@@ -92,7 +92,7 @@ class ArticlesController(BaseController):
                                                article_author=article_author,
                                                article_category=article_category)
             serialized_article = BaseController.clean_object(new_article, "id")
-            return JsonResponse(serialized_article, status=200)
+            return JsonResponse(serialized_article, status=201)
         except Exception as e:
             return JsonResponse({"error": str(e).strip()}, status=500)
 

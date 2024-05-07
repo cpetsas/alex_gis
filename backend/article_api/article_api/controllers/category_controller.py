@@ -36,7 +36,7 @@ class CategoriesController(BaseController):
         try:
             new_category = NewsCategory.objects.create(name=category_name, description=description)
             serialized_category = BaseController.clean_object(new_category, "id")
-            return JsonResponse(serialized_category, status=200)
+            return JsonResponse(serialized_category, status=201)
         except Exception as e:
             return JsonResponse({"error": str(e).strip()}, status=500)
 

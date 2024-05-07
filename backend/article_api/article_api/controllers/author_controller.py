@@ -56,7 +56,7 @@ class AuthorsController(BaseController):
                                                surname=author_surname,
                                                job_description=author_job_description)
             serialized_author = BaseController.clean_object(new_author, "id")
-            return JsonResponse(serialized_author, status=200)
+            return JsonResponse(serialized_author, status=201)
         except Exception as e:
             return JsonResponse({"error": str(e).strip()}, status=500)
 
