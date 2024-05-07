@@ -88,7 +88,7 @@ class ArticlesController(BaseController):
                                                summary=summary,
                                                content=content,
                                                published=published,
-                                               published_date=datetime.strptime(published_date, "%d-%m-%Y").date() if published_date else None,
+                                               published_date=datetime.strptime(published_date, "%Y-%m-%d").date() if published_date else None,
                                                article_author=article_author,
                                                article_category=article_category)
             serialized_article = BaseController.clean_object(new_article, "id")
@@ -123,13 +123,13 @@ class ArticlesController(BaseController):
                                                         summary=summary,
                                                         content=content,
                                                         published=published,
-                                                        published_date=datetime.strptime(published_date, "%d-%m-%Y").date(),
+                                                        published_date=datetime.strptime(published_date, "%Y-%m-%d").date(),
                                                         article_author=article_author,
                                                         article_category=article_category)
                 serialized_updated_article = BaseController.clean_object(new_article, "id")
 
                 return JsonResponse(serialized_updated_article, status=200)
-            new_values["published_date"] = datetime.strptime(new_values.get("published_date"), "%d-%m-%Y").date() if new_values.get("published_date") else None
+            new_values["published_date"] = datetime.strptime(new_values.get("published_date"), "%Y-%m-%d").date() if new_values.get("published_date") else None
             
             if (new_values.get("published") and not new_values.get("published_date")) or (new_values.get("published_date") and not new_values.get("published")  ):
                 return JsonResponse({"message": "If article is published then it needs a published date. If it's not published then it cannot have a published date."}, status=400)
