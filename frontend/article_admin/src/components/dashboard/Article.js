@@ -10,6 +10,8 @@ function Article(props){
         position: 'relative',
       };
 
+    console.log(props.info)
+
     return(
         <Box p={4}
             borderWidth="1px"
@@ -18,22 +20,28 @@ function Article(props){
             <div style={articleStyle}>
             <DeleteButton onClick={() => props.deleteResource("article", props.info.id)}/>
                 <Text>
-                    Article Id: {JSON.stringify(props.info.id)}
+                    Article Id: {props.info.id}
                 </Text>
                 <Text>
-                    Title: {JSON.stringify(props.info.title)}
+                    Title: {props.info.title}
                 </Text>
                 <Text>
-                    Summary: {JSON.stringify(props.info.summary)}
+                    Summary: {props.info.summary}
                 </Text>
                 <Text>
-                    Content: {JSON.stringify(props.info.content)}
+                    Content: {props.info.content}
                 </Text>
                 <Text>
                     Published: {JSON.stringify(props.info.published)}
                 </Text>
                 <Text>
                     Published Date: {JSON.stringify(props.info.published_date)}
+                </Text>
+                <Text>
+                    Author: {props.info.article_author.name} {props.info.article_author.surname}
+                </Text>
+                <Text>
+                    Category: {props.info.article_category.name}
                 </Text>
             </div>
         </Box>

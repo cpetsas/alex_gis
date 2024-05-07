@@ -4,6 +4,7 @@ import SideMenu from './SideMenu';
 import Authors from './Authors';
 import Categories from './Categories';
 import {useNavigate} from 'react-router-dom';
+import CreateButton from '../management/Create';
 
 
 function Dashboard (props) {
@@ -19,6 +20,7 @@ function Dashboard (props) {
     const [article_reload, setArticleReload] = useState(false)
     const [author_reload, setAuthorReload] = useState(true)
     const [categories_reload, setCategoriesReload] = useState(true)
+    const [create_destination, setCreateDestination] = useState("article")
     const navigate = useNavigate()
 
   
@@ -93,6 +95,7 @@ function Dashboard (props) {
             setArticleReload(false)
             setAuthorReload(true)
             setCategoriesReload(true)
+            setCreateDestination(tab)
             fetchResource(tab)
         }
         else if (tab == "author"){
@@ -102,6 +105,7 @@ function Dashboard (props) {
             setArticleReload(true)
             setAuthorReload(false)
             setCategoriesReload(true)
+            setCreateDestination(tab)
             fetchResource(tab)
         }
         else if (tab == "category"){
@@ -111,6 +115,7 @@ function Dashboard (props) {
             setArticleReload(true)
             setAuthorReload(true)
             setCategoriesReload(false)
+            setCreateDestination(tab)
             fetchResource(tab)
         }
     }
@@ -143,7 +148,7 @@ function Dashboard (props) {
         }
         if (articles.length != 0) {
             return(
-                <Articles articles={articles} deleteResource={deleteResource}/>
+                <Articles articles={articles} deleteResource={deleteResource} style={{ marginLeft: '20px', width: '50vw' }}/>
             )
         }
     }
@@ -154,7 +159,7 @@ function Dashboard (props) {
         }
         if (authors.length != 0) {
             return(
-                <Authors authors={authors} deleteResource={deleteResource}/>
+                <Authors authors={authors} deleteResource={deleteResource} style={{ marginLeft: '20px', width: '50vw' }}/>
             )
         }
     }
@@ -165,7 +170,7 @@ function Dashboard (props) {
         }
         if (categories.length != 0) {
             return(
-                <Categories categories={categories} deleteResource={deleteResource}/>
+                <Categories categories={categories} deleteResource={deleteResource} style={{ marginLeft: '20px', width: '50vw' }}/>
             )
         }
     }
@@ -173,6 +178,7 @@ function Dashboard (props) {
     return (
         <div>
             <SideMenu selectTab={selectTab}/>
+            <CreateButton destination={create_destination}/>
             <div className="dashboard">
                 {renderer()}
             </div>

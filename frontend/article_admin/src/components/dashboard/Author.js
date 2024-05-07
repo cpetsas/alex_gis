@@ -19,16 +19,16 @@ function Author(props){
             <div style={authorStyle}>
                 <DeleteButton onClick={() => props.deleteResource("author", props.info.id)}/>
                 <Text>
-                    Author Id: {JSON.stringify(props.info.id)}
+                    Author Id: {props.info.id}
                 </Text>
                 <Text>
-                    Name: {JSON.stringify(props.info.name)}
+                    Name: {props.info.name}
                 </Text>
                 <Text>
-                    Surhame: {JSON.stringify(props.info.surname)}
+                    Surhame: {props.info.surname}
                 </Text>
                 <Text>
-                    Job: {JSON.stringify(props.info.job_description)}
+                    Job: {props.info.job_description}
                 </Text>
             </div>
         </Box>

@@ -18,13 +18,13 @@ function Category(props){
             <div style={categoryStyle}>
             <DeleteButton onClick={() => props.deleteResource("category", props.info.id)}/>
                 <Text>
-                    Category Id: {JSON.stringify(props.info.id)}
+                    Category Id: {props.info.id}
                 </Text>
                 <Text>
-                    Name: {JSON.stringify(props.info.name)}
+                    Name: {props.info.name}
                 </Text>
                 <Text>
-                    Description: {JSON.stringify(props.info.description)}
+                    Description: {props.info.description}
                 </Text>
             </div>
             
