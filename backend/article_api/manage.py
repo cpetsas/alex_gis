@@ -2,10 +2,11 @@
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
-
+import time
 
 def main():
     """Run administrative tasks."""
+    maxRetries = 5
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'article_api.settings')
     try:
         from django.core.management import execute_from_command_line
@@ -15,7 +16,11 @@ def main():
             "available on your PYTHONPATH environment variable? Did you "
             "forget to activate a virtual environment?"
         ) from exc
-    execute_from_command_line(sys.argv)
+    for i in range(maxRetries):
+        try:
+            execute_from_command_line(sys.argv)
+        except:
+            time.sleep(2)
 
 
 if __name__ == '__main__':
