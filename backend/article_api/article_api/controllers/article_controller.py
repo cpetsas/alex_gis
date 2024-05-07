@@ -88,7 +88,7 @@ class ArticlesController(BaseController):
                                                summary=summary,
                                                content=content,
                                                published=published,
-                                               published_date=datetime.strptime(published_date, "%d-%m-%Y").date(),
+                                               published_date=datetime.strptime(published_date, "%d-%m-%Y").date() if published_date else None,
                                                article_author=article_author,
                                                article_category=article_category)
             serialized_article = BaseController.clean_object(new_article, "id")
