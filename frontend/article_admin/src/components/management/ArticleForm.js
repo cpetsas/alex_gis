@@ -6,9 +6,6 @@ import BackToDashboard from './BackToDashboard';
 
 function ArticleForm (props) {
     const navigate = useNavigate()
-    // if (localStorage.getItem("loggedOut") == "true"){
-    //     navigate('/dashboard')
-    // }
     const [articleData, setArticleData] = useState({
         title: '',
         summary: '',
@@ -115,16 +112,6 @@ function ArticleForm (props) {
                 }
             }
         })
-
-        // setArticleData({
-        // title: '',
-        // summary: '',
-        // content: '',
-        // published: false,
-        // published_date: '',
-        // author: '',
-        // category: '',
-        // });
     };
 
     function errorRenderer () {

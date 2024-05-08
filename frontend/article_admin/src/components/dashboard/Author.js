@@ -1,14 +1,22 @@
 import { VStack, Box, Text} from '@chakra-ui/react'
 import DeleteButton from '../management/Delete'
+import EditButton from '../management/EditButton';
+import React, { useState } from 'react';
+import {useNavigate} from 'react-router-dom';
 
 
 function Author(props){
+    const navigate = useNavigate()
 
     const authorStyle = {
         padding: '10px',
         marginBottom: '10px',
         position: 'relative',
         };
+    
+    function EditResource () {
+        navigate(`/edit/author/${props.info.id}`)
+    }
     
 
     return(
@@ -18,6 +26,7 @@ function Author(props){
             boxShadow="md" >
             <div style={authorStyle}>
                 <DeleteButton onClick={() => props.deleteResource("author", props.info.id)}/>
+                <EditButton onClick={() => EditResource()}/>
                 <Text>
                     Author Id: {props.info.id}
                 </Text>

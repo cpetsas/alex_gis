@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
-import {useNavigate} from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import {useNavigate, useParams} from 'react-router-dom';
 import BackToDashboard from './BackToDashboard';
 import FormError from './FormError';
 
 
-const CategoryForm = ({ onSubmit }) => {
+function CategoryForm (props) {
+
+    const {index} = useParams()
     const [categoryData, setCategoryData] = useState({
         name: '',
         description: '',
@@ -12,7 +14,46 @@ const CategoryForm = ({ onSubmit }) => {
     const [error, setError] = useState(null);
 
     const navigate = useNavigate()
-    console.log(localStorage.getItem("loggedOut"))
+    useEffect(() => {
+        if (props.edit){
+            fetchResource("category");
+        }
+      }, []);
+
+    function fetchResource(target) {
+        const token = localStorage.getItem('jwt');
+        fetch(`${process.env.REACT_APP_API}${target}/${index}`,{
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            }
+        })
+        .then((response)=>{
+            if (response.status === 200){
+                return (response.json())
+            }
+            else{
+                if (response.status === 401){
+                    setCategoryData({
+                        name: '',
+                        description: '',
+                    })
+                    return (401)
+                }
+            }})
+        .then((data)=> {
+            if (data === 401){
+                localStorage.setItem("loggedOut", true)
+                return
+            }
+            else if (target == "category"){
+                setCategoryData({ name: data.name,
+                                description: data.description,})
+            }
+            })
+    };
+
     if (localStorage.getItem("loggedOut") != "false"){
         navigate('/login')
     }
@@ -32,10 +73,15 @@ const CategoryForm = ({ onSubmit }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log("here");
         const token = localStorage.getItem('jwt');
-        fetch(`${process.env.REACT_APP_API}category/create`,{
-            method: "POST",
+        var url = `${process.env.REACT_APP_API}category/create`
+        var method = "POST"
+        if (props.edit){
+            url = `${process.env.REACT_APP_API}category/update/${index}`
+            method = "PUT"
+        }
+        fetch(url,{
+            method: method,
             headers: {
                 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json',
@@ -44,7 +90,7 @@ const CategoryForm = ({ onSubmit }) => {
             body: JSON.stringify(categoryData)
         })
         .then((response)=>{
-            if (response.status === 201){
+            if (response.status === 201 || response.status === 200){
                 navigate("/dashboard")
             }
             else{
@@ -109,7 +155,7 @@ const CategoryForm = ({ onSubmit }) => {
                             </div>
                         <button type="submit">Submit</button>
                     </form>
-                    (errorRenderer())
+                    {errorRenderer()}
                 </div>
             )
         }

@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
-import {useNavigate} from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import {useNavigate, useParams} from 'react-router-dom';
 import BackToDashboard from './BackToDashboard';
 import FormError from './FormError';
 
 
 function AuthorForm (props) {
+
+    const {index} = useParams()
     const [authorData, setAuthorData] = useState({
         name: '',
         surname: '',
@@ -12,6 +14,49 @@ function AuthorForm (props) {
     });
     const [error, setError] = useState(null);
     const navigate = useNavigate()
+
+    useEffect(() => {
+        if (props.edit){
+            fetchResource("author");
+        }
+      }, []);
+
+    function fetchResource(target) {
+        const token = localStorage.getItem('jwt');
+        fetch(`${process.env.REACT_APP_API}${target}/${index}`,{
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            }
+        })
+        .then((response)=>{
+            if (response.status === 200){
+                return (response.json())
+            }
+            else{
+                if (response.status === 401){
+                    setAuthorData({
+                        name: '',
+                        surname: '',
+                        job_description: '',
+                    })
+                    return (401)
+                }
+            }})
+        .then((data)=> {
+            if (data === 401){
+                localStorage.setItem("loggedOut", true)
+                return
+            }
+            else if (target == "author"){
+                setAuthorData({ name: data.name,
+                                surname: data.surname,
+                                job_description: data.job_description,})
+            }
+            })
+    };
+
     if (localStorage.getItem("loggedOut") != "false"){
         navigate('/dashboard')
     }
@@ -31,8 +76,14 @@ function AuthorForm (props) {
     const handleSubmit = (e) => {
         e.preventDefault();
         const token = localStorage.getItem('jwt');
-        fetch(`${process.env.REACT_APP_API}author/create`,{
-            method: "POST",
+        var url = `${process.env.REACT_APP_API}author/create`
+        var method = "POST"
+        if (props.edit){
+            url = `${process.env.REACT_APP_API}author/update/${index}`
+            method = "PUT"
+        }
+        fetch(url,{
+            method: method,
             headers: {
                 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json',
@@ -41,7 +92,7 @@ function AuthorForm (props) {
             body: JSON.stringify(authorData)
         })
         .then((response)=>{
-            if (response.status === 201){
+            if (response.status === 201 || response.status === 200){
                 navigate("/dashboard")
             }
             else{
@@ -120,6 +171,7 @@ function AuthorForm (props) {
                         </div>
                         <button type="submit">Submit</button>
                     </form>
+                    {errorRenderer()}
                 </div>
             )
         }

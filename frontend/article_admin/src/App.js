@@ -19,6 +19,9 @@ function App() {
                 <Route path="/create/category" element={<CategoryForm/>} />
                 <Route path="/create/author" element={<AuthorForm/>} />
                 <Route path="/create/article" element={<ArticleForm/>} />
+                <Route path="/edit/category/:index" element={<CategoryForm edit={true}/>} />
+                <Route exact path="/edit/author/:index" element={<AuthorForm edit={true}/>} />
+                <Route path="/edit/article/:index" element={<ArticleForm edit={true}/>} />
               </Routes>
             </header>
           </div>

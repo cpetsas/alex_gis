@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Flex, Box, Tab, Tabs, TabList, TabPanel, TabPanels } from '@chakra-ui/react';
+import LogoutButton from '../authorisation/Logout';
 
 function SideMenu(props) {
 
@@ -37,6 +38,9 @@ function SideMenu(props) {
                         Categories
                     </Tab>
                 </Tabs>
+            </Box>
+            <Box w="100%">
+                <LogoutButton/>
             </Box>
         </Flex>
     </Box>
