@@ -14,12 +14,23 @@ from ..middlewares.auth_middleware import AuthorisationMiddleware
 
 
 class ArticlesController(BaseController):
+    """
+    Class responsible for managing article actions
+    """
 
     @staticmethod
     @csrf_exempt
     @require_http_methods(['GET']) 
     @AuthorisationMiddleware.jwt_check_admin_check(user_accessible=True)
     def get_article(_, article_index):
+        """
+        Method for fetching a single article based on given index.
+        params:
+            _ (GET request but we don't use it)
+            article_index: int. Unique identifier for article. (provided in url)
+        returns:
+            JsonResponse with appropriate status and payload
+        """
         try:
             try:
                 existing_article = NewsArticle.objects.get(id=article_index)
@@ -43,6 +54,13 @@ class ArticlesController(BaseController):
     @require_http_methods(['GET']) 
     @AuthorisationMiddleware.jwt_check_admin_check(user_accessible=True)
     def get_all_articles(_):
+        """
+        Method for fetching all articles in the DB.
+        params:
+            _ (GET request but we don't use it)
+        returns:
+            JsonResponse with appropriate status and payload
+        """
         try:
             all_articles = NewsArticle.objects.all()
             serialized_articles = []
@@ -66,6 +84,22 @@ class ArticlesController(BaseController):
     @require_http_methods(['POST'])
     @AuthorisationMiddleware.jwt_check_admin_check()
     def create_article(request):
+        """
+        Method for creating an article.
+        params:
+            request. POST request body should be in the following format:
+                {   
+                    "title": "String",
+                    "summary": "String",
+                    "content": "String",
+                    "author": int: author_index,
+                    "category": int: category_index,
+                    "published": boolean,
+                    "published_date": "String in the format %Y-%m-%d"
+                }
+        returns:
+            JsonResponse with appropriate status and payload
+        """
         request_body = json.loads(request.body)
         try:
             title = request_body["title"]
@@ -101,6 +135,25 @@ class ArticlesController(BaseController):
     @require_http_methods(['PUT'])
     @AuthorisationMiddleware.jwt_check_admin_check()
     def update_article(request, article_index):
+        """
+        Method for updating or creating an article.
+        params:
+            request. PUT request body should be in the following format:
+                {   
+                    "title": "String",
+                    "summary": "String",
+                    "content": "String",
+                    "author": int: author_index,
+                    "category": int: category_index,
+                    "published": boolean,
+                    "published_date": "String in the format %Y-%m-%d"
+                }
+            article_index. int. If article_index exists then we update article based on the request payload. 
+                                If not we create a new article with the specific index.
+                                (provided in url)
+        returns:
+            JsonResponse with appropriate status and payload
+        """
         try:
             new_values = json.loads(request.body)
             print(new_values)
@@ -151,6 +204,14 @@ class ArticlesController(BaseController):
     @require_http_methods(['DELETE'])
     @AuthorisationMiddleware.jwt_check_admin_check()
     def delete_article(_, article_index):
+        """
+        Method for deleting an article.
+        params:
+            _ (DELETE request but we don't use it)
+            article_index: int. Unique identifier for article (provided in url)
+        returns:
+            JsonResponse with appropriate status and payload
+        """
         try:
             existing_article = NewsArticle.objects.get(id=article_index)
         except:
