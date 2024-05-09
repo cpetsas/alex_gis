@@ -100,9 +100,10 @@ class ArticlesController(BaseController):
     @csrf_exempt
     @require_http_methods(['PUT'])
     @AuthorisationMiddleware.jwt_check_admin_check()
-    def update_article(request, article_index):    
+    def update_article(request, article_index):
         try:
             new_values = json.loads(request.body)
+            print(new_values)
             try:
                 NewsArticle.objects.get(id=article_index)
                 
@@ -116,8 +117,9 @@ class ArticlesController(BaseController):
                 if (published and not published_date) or (published_date and not published):
                     return JsonResponse({"message": "If article is published then it needs a published date. If it's not published then it cannot have a published date."}, status=400)
 
-                article_author = Author.objects.get(id=new_values.get("author"))
-                article_category = NewsCategory.objects.get(id=new_values.get("category"))
+                article_author = Author.objects.get(id=int(new_values.get("author")))
+                
+                article_category = NewsCategory.objects.get(id=int(new_values.get("category")))
                 new_article = NewsArticle.objects.create(id=article_index,
                                                         title=title,
                                                         summary=summary,
@@ -134,6 +136,10 @@ class ArticlesController(BaseController):
             if (new_values.get("published") and not new_values.get("published_date")) or (new_values.get("published_date") and not new_values.get("published")  ):
                 return JsonResponse({"message": "If article is published then it needs a published date. If it's not published then it cannot have a published date."}, status=400)
             
+            article_author = Author.objects.get(id=int(new_values.get("author")))
+            article_category = NewsCategory.objects.get(id=int(new_values.get("category")))
+            new_values["article_author"] = article_author
+            new_values["article_category"] = article_category
             updated_article,_= NewsArticle.objects.update_or_create(id=article_index, defaults=new_values)
             serialized_updated_article = BaseController.clean_object(updated_article, "id")
             return JsonResponse(serialized_updated_article, status=200)

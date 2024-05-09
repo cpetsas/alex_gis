@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import {useNavigate} from 'react-router-dom';
+import {useNavigate, useParams} from 'react-router-dom';
 import FormError from './FormError';
 import BackToDashboard from './BackToDashboard';
 
 
 function ArticleForm (props) {
+    const {index} = useParams()
     const navigate = useNavigate()
     const [articleData, setArticleData] = useState({
         title: '',
@@ -29,13 +30,20 @@ function ArticleForm (props) {
 
 
     useEffect(() => {
+        if (props.edit){
+            fetchResource("article")
+        }
         fetchResource("author");
         fetchResource("category");
       }, []);
     
     function fetchResource(target) {
         const token = localStorage.getItem('jwt');
-        fetch(`${process.env.REACT_APP_API}${target}`,{
+        var url = `${process.env.REACT_APP_API}${target}`
+        if (props.edit && target === "article"){
+            url = `${process.env.REACT_APP_API}${target}/${index}`
+        }
+        fetch(url,{
             headers: {
                 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json',
@@ -58,17 +66,29 @@ function ArticleForm (props) {
                 localStorage.setItem("loggedOut", true)
                 return
             }
-            else if (target == "category"){
+            else if (target === "category"){
                 setCategories([...data])
             }
-            else if (target == "author"){
+            else if (target === "author"){
                 setAuthors([...data])
+            }
+            else if (target === "article"){
+                setArticleData({
+                    title: data.title,
+                    summary: data.summary,
+                    content: data.content,
+                    published: data.published,
+                    published_date: data.published_date,
+                    author: data.article_author.id,
+                    category: data.article_category.id,
+                })
             }
             })
     };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
+        console.log(name, value)
         setArticleData({ ...articleData, [name]: value });
     };
 
@@ -80,8 +100,15 @@ function ArticleForm (props) {
     const handleSubmit = (e) => {
         e.preventDefault();
         const token = localStorage.getItem('jwt');
-        fetch(`${process.env.REACT_APP_API}article/create`,{
-            method: "POST",
+        var url = `${process.env.REACT_APP_API}article/create`
+        var method = "POST"
+        console.log(articleData)
+        if (props.edit){
+            url = `${process.env.REACT_APP_API}article/update/${index}`
+            method = "PUT"
+        }
+        fetch(url,{
+            method: method,
             headers: {
                 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json',
@@ -90,7 +117,7 @@ function ArticleForm (props) {
             body: JSON.stringify(articleData)
         })
         .then((response)=>{
-            if (response.status === 201){
+            if (response.status === 201 || response.status === 200){
                 navigate("/dashboard")
             }
             else{
