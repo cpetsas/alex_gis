@@ -1,5 +1,5 @@
 import React from 'react';
-import { VStack, Container, Flex, IconButton } from '@chakra-ui/react'
+import { VStack } from '@chakra-ui/react'
 import Author from "./Author"
 
 

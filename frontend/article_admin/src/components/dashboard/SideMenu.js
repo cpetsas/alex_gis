@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Flex, Box, Tab, Tabs, TabList, TabPanel, TabPanels } from '@chakra-ui/react';
 import LogoutButton from '../authorisation/Logout';
 

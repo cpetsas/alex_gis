@@ -1,7 +1,7 @@
-import { VStack, Box, Text} from '@chakra-ui/react'
+import { Box, Text} from '@chakra-ui/react'
 import DeleteButton from '../management/Delete'
 import EditButton from '../management/EditButton';
-import React, { useState } from 'react';
+import React from 'react';
 import {useNavigate} from 'react-router-dom';
 
 
