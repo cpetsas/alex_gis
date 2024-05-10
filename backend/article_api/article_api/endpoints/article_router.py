@@ -4,6 +4,10 @@ from .base_router import BaseRouter
 
 
 class ArticlesRouter(BaseRouter):
+    """
+    Class for fetching article routes. Uses ArticlesController class to point to method based on url path
+    """
+
 
     article_controller = ArticlesController
 

@@ -18,6 +18,17 @@ class CategoriesController(BaseController):
     @require_http_methods(['POST'])
     @AuthorisationMiddleware.jwt_check_admin_check()
     def create_category(request):
+        """
+        Method for creating a category.
+        params:
+            request. POST request body should be in the following format:
+                {   
+                    "name": "String",
+                    "description": "String
+                }
+        returns:
+            JsonResponse with appropriate status and payload
+        """
         request_body = json.loads(request.body)
         try:
             category_name = request_body["name"]
@@ -45,6 +56,14 @@ class CategoriesController(BaseController):
     @require_http_methods(['GET']) 
     @AuthorisationMiddleware.jwt_check_admin_check(user_accessible=True)
     def get_category(_, category_index):
+        """
+        Method for fetching a single category based on given index.
+        params:
+            _ (GET request but we don't use it)
+            catagory_index: int. Unique identifier for category. (provided in url)
+        returns:
+            JsonResponse with appropriate status and payload
+        """
         try:
             existing_category = NewsCategory.objects.get(id=category_index)
             serialized_category = BaseController.clean_object(existing_category, "id")
@@ -57,6 +76,13 @@ class CategoriesController(BaseController):
     @require_http_methods(['GET']) 
     @AuthorisationMiddleware.jwt_check_admin_check(user_accessible=True)
     def get_all_categories(_):
+        """
+        Method for fetching all categories in the DB.
+        params:
+            _ (GET request but we don't use it)
+        returns:
+            JsonResponse with appropriate status and payload
+        """
         try:
             all_categories = NewsCategory.objects.all()
             serialized_categories = []
@@ -70,7 +96,21 @@ class CategoriesController(BaseController):
     @csrf_exempt
     @require_http_methods(['PUT'])
     @AuthorisationMiddleware.jwt_check_admin_check()
-    def update_category(request, category_index):    
+    def update_category(request, category_index):
+        """
+        Method for updating or creating a category.
+        params:
+            request. PUT request body should be in the following format:
+                {   
+                    "name": "String",
+                    "description": "String
+                }
+            category_index. int.  If category exists then we update the category based on the request payload. 
+                                If not we create a new category with the specific index.
+                                (provided in url)
+        returns:
+            JsonResponse with appropriate status and payload
+        """
         try:
             new_values = json.loads(request.body)
             updated_category,_= NewsCategory.objects.update_or_create(id=category_index, defaults=new_values)
@@ -84,6 +124,14 @@ class CategoriesController(BaseController):
     @require_http_methods(['DELETE'])
     @AuthorisationMiddleware.jwt_check_admin_check()
     def delete_category(_, category_index):
+        """
+        Method for deleting a category.
+        params:
+            _ (DELETE request but we don't use it)
+            category_index: int. Unique identifier for category (provided in url)
+        returns:
+            JsonResponse with appropriate status and payload
+        """
         try:
             existing_category = NewsCategory.objects.get(id=category_index)
         except:

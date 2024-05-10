@@ -4,7 +4,9 @@ from .base_router import BaseRouter
 
 
 class CategoryRouter(BaseRouter):
-
+    """
+    Class for fetching category routes. Uses CategoryController class to point to method based on url path
+    """
     category_controller = CategoriesController
 
     @classmethod

@@ -4,6 +4,9 @@ from .base_router import BaseRouter
 
 
 class AuthorsRouter(BaseRouter):
+    """
+    Class for fetching author routes. Uses AuthorController class to point to method based on url path
+    """
 
     authors_controller = AuthorsController
 

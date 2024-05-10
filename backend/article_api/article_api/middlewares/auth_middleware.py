@@ -5,6 +5,14 @@ from django.http import JsonResponse
 from ..models.user_model import User
 
 class AuthorisationMiddleware:
+    """
+    Class housing Authorisation Middleware. Only containers a decorator that returns the decorated function,
+    or throws a JsonResponse if provided token is invalid or expired. Also throws a 403 if action is not allowed
+    for user.
+    params:
+        user_accessible: Boolean. Defaults to False. If provided with True then any regular, non admin users,
+        are able to access the resource.
+    """
 
     @staticmethod
     def jwt_check_admin_check(user_accessible = False):

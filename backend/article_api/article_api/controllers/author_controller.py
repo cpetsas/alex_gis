@@ -17,6 +17,14 @@ class AuthorsController(BaseController):
     @require_http_methods(['GET']) 
     @AuthorisationMiddleware.jwt_check_admin_check(user_accessible=True)
     def get_author(_, author_index):
+        """
+        Method for fetching a single author based on given index.
+        params:
+            _ (GET request but we don't use it)
+            author_index: int. Unique identifier for author. (provided in url)
+        returns:
+            JsonResponse with appropriate status and payload
+        """
         try:
             existing_author = Author.objects.get(id=author_index)
             serialized_author = BaseController.clean_object(existing_author, "id")
@@ -29,6 +37,13 @@ class AuthorsController(BaseController):
     @require_http_methods(['GET']) 
     @AuthorisationMiddleware.jwt_check_admin_check(user_accessible=True)
     def get_all_authors(_):
+        """
+        Method for fetching all authors in the DB.
+        params:
+            _ (GET request but we don't use it)
+        returns:
+            JsonResponse with appropriate status and payload
+        """
         try:
             all_authors = Author.objects.all()
             serialized_authors = []
@@ -43,6 +58,18 @@ class AuthorsController(BaseController):
     @require_http_methods(['POST'])
     @AuthorisationMiddleware.jwt_check_admin_check()
     def create_author(request):
+        """
+        Method for creating an author.
+        params:
+            request. POST request body should be in the following format:
+                {   
+                    "name": "String",
+                    "surname": "String",
+                    "job_description": "String"
+                }
+        returns:
+            JsonResponse with appropriate status and payload
+        """
         request_body = json.loads(request.body)
         try:
             author_name = request_body["name"]
@@ -64,7 +91,22 @@ class AuthorsController(BaseController):
     @csrf_exempt
     @require_http_methods(['PUT'])
     @AuthorisationMiddleware.jwt_check_admin_check()
-    def update_author(request, author_index):    
+    def update_author(request, author_index):
+        """
+        Method for updating or creating an author.
+        params:
+            request. PUT request body should be in the following format:
+                {   
+                    "name": "String",
+                    "surname": "String",
+                    "job_description": "String"
+                }
+            author_index. int.  If author exists then we update author based on the request payload. 
+                                If not we create a new author with the specific index.
+                                (provided in url)
+        returns:
+            JsonResponse with appropriate status and payload
+        """
         try:
             new_values = json.loads(request.body)
             updated_author,_= Author.objects.update_or_create(id=author_index, defaults=new_values)
@@ -78,6 +120,14 @@ class AuthorsController(BaseController):
     @require_http_methods(['DELETE'])
     @AuthorisationMiddleware.jwt_check_admin_check()
     def delete_author(_, author_index):
+        """
+        Method for deleting an author.
+        params:
+            _ (DELETE request but we don't use it)
+            author_index: int. Unique identifier for author (provided in url)
+        returns:
+            JsonResponse with appropriate status and payload
+        """
         try:
             existing_author = Author.objects.get(id=author_index)
         except:
