@@ -19,11 +19,7 @@
 
 ## Project dependencies
 
-### Frontend
-Navigate in the frontend/article_admin directory and install dependencies with npm (There is a bug with react within docker-compose where npm installing in the image itself and then running "npm start" throws "react-scripts not found". Therefore we will install the dependencies outside the image and then copy them in it during the build process):
-```sh
-    npm install
-```
+None, each component's dependencies are handled by docker.
 
 ## Running the system
 
@@ -31,7 +27,7 @@ In the root of the repository run:
 ```sh
     sudo docker-compose build
 ```
-When the images are finished building run:
+When the images are finished building run (ommit -d if you want to see the logs for all 3 containers at the same time):
 ```sh
     sudo docker-compose up -d
 ```
@@ -46,11 +42,11 @@ Password: regular_pass
 Regular users have access to GET requests but not to anything else. Therefore they can see the data but they cannot delete, create or alter. 
 
 ## Project disclaimers
-- This system was developed with the purpose of being a demo.
+- This system was developed with the purpose of it being a demo.
 - This is a synchronous API. I am not a fan of python web APIs because, in py opinion, there are better options out there. For production I would prefer to build an async api with express/nextjs.
-- This system was not meant to be production ready. Steps to make it production ready:
+- This system was not meant to be production ready. SOme steps to make it production ready:
     - Introduce web server, eg NGINX.
-    - Make it scalable (maybe introduce Kubernete and KEDA if needed)
+    - Make it scalable (maybe introduce Kubernetes and KEDA if needed)
     - Encrypt user credentials. Currently im saving passwords and tokens as strings which is a very bad idea in a production environment.
     - Add env variables in a cloud environment and fetch them from there (eg Azure vault).
     - Mount DB on a volume. Right now the DB data is not persistent.
