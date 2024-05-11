@@ -51,3 +51,4 @@ Regular users have access to GET requests but not to anything else. Therefore th
     - Add env variables in a cloud environment and fetch them from there (eg Azure vault).
     - Mount DB on a volume. Right now the DB data is not persistent.
 - I focused on the functionality side of the frontent, not the design or interface. I made sure it is functional and easy to use but I did not put effort into making it pleasantly presentable.
+- I did not include functional/unit tests. I do prefer functional over unit tests so what I would do is create a new container as part of the cluster that would server as the test DB, create the schemas of the database and create an external python script that makes requests to the api. The test_db container would not be moutned anywhere so we can start our tests from the same, clean state.
