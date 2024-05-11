@@ -15,7 +15,7 @@ services:
   
   frontend:
     build: ./frontend/article_admin
-    command: npm start
+    command: bash src/scripts/deploy.sh
     volumes:
       - ./frontend/:/usr/frontend
     ports:
