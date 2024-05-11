@@ -121,6 +121,14 @@ function CategoryForm (props) {
         }
     }
 
+    function renderPageTitle () {
+        if (props.edit){
+            return(<h2>Edit Category</h2>)
+        } else {
+            return(<h2>Create Category</h2>)
+        }
+    }
+
     function contentRender(){
         if (localStorage.getItem("loggedOut") != "false"){
             navigate('/login')
@@ -129,7 +137,7 @@ function CategoryForm (props) {
                 <div>
                     <BackToDashboard/>
                     <form onSubmit={handleSubmit}>
-                        <h2>Create Category</h2>
+                        {renderPageTitle()}
                             <div>
                                 <label htmlFor="name">Name:</label>
                                 <input

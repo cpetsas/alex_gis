@@ -149,6 +149,14 @@ function ArticleForm (props) {
         }
     }
 
+    function renderPageTitle () {
+        if (props.edit){
+            return(<h2>Edit Article</h2>)
+        } else {
+            return(<h2>Create Article</h2>)
+        }
+    }
+
     function contentRender () {
         if (localStorage.getItem("loggedOut") != "false"){
             navigate('/login')
@@ -157,8 +165,8 @@ function ArticleForm (props) {
             return(
                 <div>
                     <BackToDashboard/>
-                        <form onSubmit={handleSubmit} style={{ marginLeft: '20px', width: '50vw' }} >
-                            <h2>Create Article</h2>
+                        <form onSubmit={handleSubmit} style={{ marginLeft: '20px', width: '50vw' }}>
+                            {renderPageTitle()}
                             <div>
                                 <label htmlFor="title">Title:</label>
                                 <input

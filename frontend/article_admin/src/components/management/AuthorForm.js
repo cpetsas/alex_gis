@@ -124,6 +124,14 @@ function AuthorForm (props) {
         }
     }
 
+    function renderPageTitle () {
+        if (props.edit){
+            return(<h2>Edit Author</h2>)
+        } else {
+            return(<h2>Create Author</h2>)
+        }
+    }
+
     function contentRenderer(){
         if (localStorage.getItem("loggedOut") != "false"){
             navigate('/login')
@@ -133,7 +141,7 @@ function AuthorForm (props) {
                 <div>
                     <BackToDashboard/>
                     <form onSubmit={handleSubmit}>
-                        <h2>Create Author</h2>
+                        {renderPageTitle()}
                         <div>
                             <label htmlFor="name">Name:</label>
                             <input
