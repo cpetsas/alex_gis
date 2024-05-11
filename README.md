@@ -1,6 +1,6 @@
 # Article management system
 
-## System dependencies - This project assumes you are using Linux
+## System dependencies - This project assumes you are using Ubuntu Linux
 
 - docker
 - docker-compose
