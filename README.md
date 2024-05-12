@@ -1,6 +1,6 @@
 # Article management system
 
-## System dependencies - This project assumes you are using Ubuntu Linux
+## System dependencies - This project assumes you are using Ubuntu                              Linux
 
 - docker
 - docker-compose
@@ -22,6 +22,8 @@
 None, each component's dependencies are handled by docker.
 
 ## Running the system
+
+We are exposing the services on ports 3000 (frontend) and 8000 (backend). Make sure the host machine has these two ports available.
 
 In the root of the repository run:
 ```sh
